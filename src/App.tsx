@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import useWindowDimensions from './hooks/useWindowDimensions';
+import AceEditor from 'react-ace';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -51,6 +52,7 @@ function App(): JSX.Element {
   const { height } = useWindowDimensions();
   const [textareaRows, setTextareaRows] = useState(0);
 
+  /*
   useEffect(() => {
     const nHeight = height - 200;
     if (nHeight >= 1000) {
@@ -65,11 +67,18 @@ function App(): JSX.Element {
       setTextareaRows(Math.floor(height / 60) || 1);
     }
   }, [height]);
+  */
 
-  const onBlur = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const onBlur = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    editor: any,
+  ) => {
+    console.log(event);
+    console.log(editor.getValue());
+    const value = editor.getValue();
     let json = '';
 
-    if (!event.target.value) {
+    if (!value) {
       setJson('');
       setError('');
       setIsJsonValid(false);
@@ -77,24 +86,24 @@ function App(): JSX.Element {
     }
 
     try {
-      const parsedJson = JSON.parse(event.target.value);
+      const parsedJson = JSON.parse(value);
       json = JSON.stringify(parsedJson, null, 2);
       setError('');
       setIsJsonValid(true);
     } catch (e) {
       if (e instanceof SyntaxError) {
         setError(e.message);
-        json = event.target.value;
+        json = value;
         setIsJsonValid(false);
       }
     }
     setJson(json);
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const onChange = (value: string) => {
     setError('');
     setIsJsonValid(false);
-    setJson(event.target.value);
+    setJson(value);
   };
 
   return (
@@ -113,20 +122,23 @@ function App(): JSX.Element {
             {error && !isJsonValid && <Alert severity="error">{error}</Alert>}
             {!error && isJsonValid && <Alert severity="success">JSON is valid</Alert>}
           </Box>
-          <Grid container component="main">
-            <form style={styles.form}>
-              <TextField
-                style={styles.jsonTextarea}
-                multiline
-                minRows={textareaRows}
-                maxRows={textareaRows}
-                placeholder="Paste your JSON here. Press tab or click anywhere else to format it."
-                onBlur={onBlur}
-                onChange={onChange}
-                value={json}
-              />
-            </form>
-          </Grid>
+          <AceEditor
+            placeholder="Placeholder Text"
+            mode="json"
+            theme="xcode"
+            name="blah2"
+            onBlur={onBlur}
+            onChange={onChange}
+            fontSize={14}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            value={json}
+            setOptions={{
+              showLineNumbers: true,
+              tabSize: 2,
+            }}
+          />
         </Container>
         <Box
           component="footer"
