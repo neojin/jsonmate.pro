@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Alert from '@mui/material/Alert';
@@ -9,10 +8,10 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import Footer from './components/Footer';
-import jmespath from 'jmespath';
 import { useSelector, useDispatch } from 'react-redux';
 import { jsonInputActions } from './store/jsonInputSlice';
 import { RootState } from './store';
+import { Grid } from '@mui/material';
 
 function App(): JSX.Element {
   const theme = createTheme({
@@ -29,6 +28,11 @@ function App(): JSX.Element {
       fontSize: '1.5rem',
       marginTop: '10px',
     },
+    box: {
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+    },
     alert: {
       paddingTop: '10px',
       paddingBottom: '10px',
@@ -44,6 +48,8 @@ function App(): JSX.Element {
 
   const dispatch = useDispatch();
   const jsonInput = useSelector((state: RootState) => state.jsonInput);
+  const jmesOutput = useSelector((state: RootState) => state.jmesOutput);
+
   const { height } = useWindowDimensions();
 
   const onBlur = (
@@ -73,15 +79,42 @@ function App(): JSX.Element {
     dispatch(jsonInputActions.set({ input: value, valid: false, error: '' }));
   };
 
+  const jsonEditor = (
+    <AceEditor
+      placeholder="Paste your JSON here. Click anywhere else to format it."
+      mode="json"
+      theme="github"
+      width="100%"
+      height={`${height - 200}px`}
+      onBlur={onBlur}
+      onChange={onChange}
+      fontSize={15}
+      value={jsonInput.input}
+      setOptions={{
+        showLineNumbers: true,
+        tabSize: 2,
+      }}
+    />
+  );
+
+  const jmesEditor = (
+    <AceEditor
+      mode="json"
+      theme="github"
+      width="100%"
+      height={`${height - 200}px`}
+      fontSize={15}
+      value={jmesOutput.output}
+      setOptions={{
+        showLineNumbers: true,
+        tabSize: 2,
+      }}
+    />
+  );
+
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-        }}
-      >
+      <Box sx={styles.box}>
         <CssBaseline />
         <Container maxWidth="xl">
           <Box sx={styles.header}>{'jsonmate.pro'}</Box>
@@ -93,21 +126,17 @@ function App(): JSX.Element {
               <Alert severity="success">JSON is valid</Alert>
             )}
           </Box>
-          <AceEditor
-            placeholder="Paste your JSON here. Click anywhere else to format it."
-            mode="json"
-            theme="github"
-            width="100%"
-            height={`${height - 200}px`}
-            onBlur={onBlur}
-            onChange={onChange}
-            fontSize={15}
-            value={jsonInput.input}
-            setOptions={{
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-          />
+          {jmesOutput.showPanel && (
+            <Grid container>
+              <Grid item xs={6}>
+                {jsonEditor}
+              </Grid>
+              <Grid item xs={6}>
+                {jmesEditor}
+              </Grid>
+            </Grid>
+          )}
+          {!jmesOutput.showPanel && jsonEditor}
         </Container>
         <Footer />
       </Box>
