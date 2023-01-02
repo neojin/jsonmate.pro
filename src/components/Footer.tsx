@@ -18,23 +18,43 @@ function Footer(): JSX.Element {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (jmesInput) {
+    if (!jmesInput) {
+      setJmesPanelFirstOpen(false);
+      dispatch(jmesOutputActions.setShowPanel(false));
+      return;
+    }
+
+    if (!jmesPanelFirstOpen) {
+      setJmesPanelFirstOpen(true);
+      dispatch(jmesOutputActions.setShowPanel(true));
+    }
+
+    try {
       const parsed = JSON.parse(jsonInput.input);
       const jmesResult = jmespath.search(parsed, jmesInput);
-      console.log(jmesResult);
+
       if (jmesResult) {
         const output = JSON.stringify(jmesResult, null, 2);
-        if (!jmesPanelFirstOpen) {
-          setJmesPanelFirstOpen(true);
-          dispatch(
-            jmesOutputActions.set({
-              output: output,
-              showPanel: true,
-            }),
-          );
-        } else {
-          dispatch(jmesOutputActions.setOutput(output));
-        }
+
+        dispatch(jmesOutputActions.setOutput(output));
+        dispatch(jmesOutputActions.setError(''));
+      } else {
+        dispatch(jmesOutputActions.setOutput(''));
+        dispatch(
+          jmesOutputActions.setError(
+            'JMES Query did not return a result - please click the help icon for more information.',
+          ),
+        );
+      }
+    } catch (e) {
+      console.log(e);
+      if (e instanceof Error) {
+        dispatch(jmesOutputActions.setOutput(''));
+        dispatch(
+          jmesOutputActions.setError(
+            'Invalid Query - please click the help icon for more information.',
+          ),
+        );
       }
     }
   };

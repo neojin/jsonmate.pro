@@ -80,21 +80,31 @@ function App(): JSX.Element {
   };
 
   const jsonEditor = (
-    <AceEditor
-      placeholder="Paste your JSON here. Click anywhere else to format it."
-      mode="json"
-      theme="github"
-      width="100%"
-      height={`${height - 200}px`}
-      onBlur={onBlur}
-      onChange={onChange}
-      fontSize={15}
-      value={jsonInput.input}
-      setOptions={{
-        showLineNumbers: true,
-        tabSize: 2,
-      }}
-    />
+    <>
+      <Box sx={styles.alert}>
+        {jsonInput.error && !jsonInput.valid && (
+          <Alert severity="error">{jsonInput.error}</Alert>
+        )}
+        {!jsonInput.error && jsonInput.valid && (
+          <Alert severity="success">JSON is valid</Alert>
+        )}
+      </Box>
+      <AceEditor
+        placeholder="Paste your JSON here. Click anywhere else to format it."
+        mode="json"
+        theme="github"
+        width="100%"
+        height={`${height - 200}px`}
+        onBlur={onBlur}
+        onChange={onChange}
+        fontSize={15}
+        value={jsonInput.input}
+        setOptions={{
+          showLineNumbers: true,
+          tabSize: 2,
+        }}
+      />
+    </>
   );
 
   const jmesEditor = (
@@ -121,23 +131,13 @@ function App(): JSX.Element {
           {jmesOutput.showPanel && (
             <Grid container spacing={1}>
               <Grid item xs={6}>
-                <Box sx={styles.alert}>
-                  {jsonInput.error && !jsonInput.valid && (
-                    <Alert severity="error">{jsonInput.error}</Alert>
-                  )}
-                  {!jsonInput.error && jsonInput.valid && (
-                    <Alert severity="success">JSON is valid</Alert>
-                  )}
-                </Box>
                 {jsonEditor}
               </Grid>
               <Grid item xs={6}>
                 <Box sx={styles.alert}>
-                  {jsonInput.error && !jsonInput.valid && (
-                    <Alert severity="error">{jsonInput.error}</Alert>
-                  )}
-                  {!jsonInput.error && jsonInput.valid && (
-                    <Alert severity="success">JSON is valid</Alert>
+                  {jmesOutput.error && <Alert severity="error">{jmesOutput.error}</Alert>}
+                  {!jmesOutput.error && (
+                    <Alert severity="success">JMES Query Output:</Alert>
                   )}
                 </Box>
                 {jmesEditor}

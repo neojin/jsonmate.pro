@@ -5,6 +5,7 @@ const jmesOutputSlice = createSlice({
   initialState: {
     output: '',
     showPanel: false,
+    error: '',
   },
   reducers: {
     setOutput: (state, action) => {
@@ -13,13 +14,18 @@ const jmesOutputSlice = createSlice({
     setShowPanel: (state, action) => {
       state.showPanel = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
     reset: (state) => {
       state.output = '';
       state.showPanel = false;
+      state.error = '';
     },
     set: (state, action) => {
       state.output = action.payload.output;
       state.showPanel = action.payload.showPanel;
+      state.error = action.payload.error;
     },
   },
 });
