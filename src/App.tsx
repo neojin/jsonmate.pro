@@ -1,22 +1,15 @@
 import { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import useWindowDimensions from './hooks/useWindowDimensions';
 import AceEditor from 'react-ace';
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
-}
+import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/theme-github';
+import Footer from './components/Footer';
+import jmespath from 'jmespath';
 
 function App(): JSX.Element {
   const theme = createTheme({
@@ -50,31 +43,11 @@ function App(): JSX.Element {
   const [error, setError] = useState('');
   const [isJsonValid, setIsJsonValid] = useState(false);
   const { height } = useWindowDimensions();
-  const [textareaRows, setTextareaRows] = useState(0);
-
-  /*
-  useEffect(() => {
-    const nHeight = height - 200;
-    if (nHeight >= 1000) {
-      setTextareaRows(Math.floor(height / 30));
-    } else if (nHeight >= 800) {
-      setTextareaRows(Math.floor(height / 33));
-    } else if (nHeight >= 600) {
-      setTextareaRows(Math.floor(height / 40));
-    } else if (nHeight >= 400) {
-      setTextareaRows(Math.floor(height / 48));
-    } else {
-      setTextareaRows(Math.floor(height / 60) || 1);
-    }
-  }, [height]);
-  */
 
   const onBlur = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     editor: any,
   ) => {
-    console.log(event);
-    console.log(editor.getValue());
     const value = editor.getValue();
     let json = '';
 
@@ -106,6 +79,13 @@ function App(): JSX.Element {
     setJson(value);
   };
 
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isJsonValid) {
+      const jmespathQuery = event.target[0].value;
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -123,16 +103,14 @@ function App(): JSX.Element {
             {!error && isJsonValid && <Alert severity="success">JSON is valid</Alert>}
           </Box>
           <AceEditor
-            placeholder="Placeholder Text"
+            placeholder="Paste your JSON here. Click anywhere else to format it."
             mode="json"
-            theme="xcode"
-            name="blah2"
+            theme="github"
+            width="100%"
+            height={`${height - 200}px`}
             onBlur={onBlur}
             onChange={onChange}
-            fontSize={14}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
+            fontSize={15}
             value={json}
             setOptions={{
               showLineNumbers: true,
@@ -140,22 +118,7 @@ function App(): JSX.Element {
             }}
           />
         </Container>
-        <Box
-          component="footer"
-          sx={{
-            py: 3,
-            px: 2,
-            mt: 'auto',
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[200]
-                : theme.palette.grey[800],
-          }}
-        >
-          <Container maxWidth="sm">
-            <Typography variant="body1">My sticky footer can be found here.</Typography>
-          </Container>
-        </Box>
+        <Footer isJsonValid={isJsonValid} json={json} onSubmit={onSubmit} />
       </Box>
     </ThemeProvider>
   );
