@@ -118,20 +118,28 @@ function App(): JSX.Element {
         <CssBaseline />
         <Container maxWidth="xl">
           <Box sx={styles.header}>{'jsonmate.pro'}</Box>
-          <Box sx={styles.alert}>
-            {jsonInput.error && !jsonInput.valid && (
-              <Alert severity="error">{jsonInput.error}</Alert>
-            )}
-            {!jsonInput.error && jsonInput.valid && (
-              <Alert severity="success">JSON is valid</Alert>
-            )}
-          </Box>
           {jmesOutput.showPanel && (
-            <Grid container>
+            <Grid container spacing={1}>
               <Grid item xs={6}>
+                <Box sx={styles.alert}>
+                  {jsonInput.error && !jsonInput.valid && (
+                    <Alert severity="error">{jsonInput.error}</Alert>
+                  )}
+                  {!jsonInput.error && jsonInput.valid && (
+                    <Alert severity="success">JSON is valid</Alert>
+                  )}
+                </Box>
                 {jsonEditor}
               </Grid>
               <Grid item xs={6}>
+                <Box sx={styles.alert}>
+                  {jsonInput.error && !jsonInput.valid && (
+                    <Alert severity="error">{jsonInput.error}</Alert>
+                  )}
+                  {!jsonInput.error && jsonInput.valid && (
+                    <Alert severity="success">JSON is valid</Alert>
+                  )}
+                </Box>
                 {jmesEditor}
               </Grid>
             </Grid>
