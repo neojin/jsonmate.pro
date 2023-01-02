@@ -7,7 +7,7 @@ interface FooterProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-function Footer(props: FooterProps): JSX.Element {
+function Footer(): JSX.Element {
   return (
     <Box
       component="footer"
@@ -20,7 +20,6 @@ function Footer(props: FooterProps): JSX.Element {
       <Container maxWidth="lg">
         <Paper
           component="form"
-          onSubmit={props.onSubmit}
           sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
         >
           <InputBase sx={{ ml: 1, flex: 1 }} placeholder="JMES Path Query" />

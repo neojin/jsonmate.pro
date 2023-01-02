@@ -10,6 +10,9 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import Footer from './components/Footer';
 import jmespath from 'jmespath';
+import { useSelector, useDispatch } from 'react-redux';
+import { jsonInputActions } from './store/jsonInputSlice';
+import { RootState } from './store';
 
 function App(): JSX.Element {
   const theme = createTheme({
@@ -39,9 +42,8 @@ function App(): JSX.Element {
     },
   };
 
-  const [json, setJson] = useState('');
-  const [error, setError] = useState('');
-  const [isJsonValid, setIsJsonValid] = useState(false);
+  const dispatch = useDispatch();
+  const jsonInput = useSelector((state: RootState) => state.jsonInput);
   const { height } = useWindowDimensions();
 
   const onBlur = (
@@ -52,38 +54,23 @@ function App(): JSX.Element {
     let json = '';
 
     if (!value) {
-      setJson('');
-      setError('');
-      setIsJsonValid(false);
+      dispatch(jsonInputActions.reset());
       return;
     }
 
     try {
       const parsedJson = JSON.parse(value);
       json = JSON.stringify(parsedJson, null, 2);
-      setError('');
-      setIsJsonValid(true);
+      dispatch(jsonInputActions.set({ input: json, valid: true, error: '' }));
     } catch (e) {
       if (e instanceof SyntaxError) {
-        setError(e.message);
-        json = value;
-        setIsJsonValid(false);
+        dispatch(jsonInputActions.set({ input: value, valid: false, error: e.message }));
       }
     }
-    setJson(json);
   };
 
   const onChange = (value: string) => {
-    setError('');
-    setIsJsonValid(false);
-    setJson(value);
-  };
-
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (isJsonValid) {
-      const jmespathQuery = event.target[0].value;
-    }
+    dispatch(jsonInputActions.set({ input: value, valid: false, error: '' }));
   };
 
   return (
@@ -99,8 +86,12 @@ function App(): JSX.Element {
         <Container maxWidth="xl">
           <Box sx={styles.header}>{'jsonmate.pro'}</Box>
           <Box sx={styles.alert}>
-            {error && !isJsonValid && <Alert severity="error">{error}</Alert>}
-            {!error && isJsonValid && <Alert severity="success">JSON is valid</Alert>}
+            {jsonInput.error && !jsonInput.valid && (
+              <Alert severity="error">{jsonInput.error}</Alert>
+            )}
+            {!jsonInput.error && jsonInput.valid && (
+              <Alert severity="success">JSON is valid</Alert>
+            )}
           </Box>
           <AceEditor
             placeholder="Paste your JSON here. Click anywhere else to format it."
@@ -111,14 +102,14 @@ function App(): JSX.Element {
             onBlur={onBlur}
             onChange={onChange}
             fontSize={15}
-            value={json}
+            value={jsonInput.input}
             setOptions={{
               showLineNumbers: true,
               tabSize: 2,
             }}
           />
         </Container>
-        <Footer isJsonValid={isJsonValid} json={json} onSubmit={onSubmit} />
+        <Footer />
       </Box>
     </ThemeProvider>
   );
