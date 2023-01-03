@@ -103,6 +103,7 @@ function App(): JSX.Element {
         setOptions={{
           showLineNumbers: true,
           tabSize: 2,
+          useWorker: false,
         }}
       />
     </>
@@ -119,6 +120,7 @@ function App(): JSX.Element {
       setOptions={{
         showLineNumbers: true,
         tabSize: 2,
+        useWorker: false,
       }}
     />
   );
