@@ -84,6 +84,7 @@ function Footer(): JSX.Element {
       p: '2px 4px',
       display: 'flex',
       alignItems: 'center',
+      bgcolor: '#fffde7',
     },
     input: { ml: 1, flex: 1 },
     submit: { p: '10px' },
@@ -151,9 +152,7 @@ function Footer(): JSX.Element {
             <SearchIcon />
           </IconButton>
         </Paper>
-        <Typography
-          sx={{ mt: 1, fontSize: '90%', textAlign: 'center', color: 'grey200' }}
-        >
+        <Typography sx={{ mt: 1, fontSize: '90%', textAlign: 'center', color: '#666' }}>
           jsonmate.pro runs completely in the browser. No data is sent to a server.
         </Typography>
       </Container>
