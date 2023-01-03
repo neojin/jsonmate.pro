@@ -76,9 +76,9 @@ function Footer(): JSX.Element {
 
   const styles = {
     box: {
-      py: 3,
-      px: 2,
+      py: 2,
       mt: 'auto',
+      bgcolor: '#cfd8dc',
     },
     paper: {
       p: '2px 4px',
@@ -151,6 +151,11 @@ function Footer(): JSX.Element {
             <SearchIcon />
           </IconButton>
         </Paper>
+        <Typography
+          sx={{ mt: 1, fontSize: '90%', textAlign: 'center', color: 'grey200' }}
+        >
+          jsonmate.pro runs completely in the browser. No data is sent to a server.
+        </Typography>
       </Container>
       <Modal open={openModal} onClose={toggleModal}>
         <Box sx={styles.modal}>
