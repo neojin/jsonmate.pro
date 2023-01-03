@@ -51,6 +51,7 @@ function App(): JSX.Element {
   const jmesOutput = useSelector((state: RootState) => state.jmesOutput);
 
   const { height } = useWindowDimensions();
+  const editorHeight = `${height - 250}px`;
 
   const onBlur = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -94,7 +95,7 @@ function App(): JSX.Element {
         mode="json"
         theme="github"
         width="100%"
-        height={`${height - 200}px`}
+        height={editorHeight}
         onBlur={onBlur}
         onChange={onChange}
         fontSize={15}
@@ -112,7 +113,7 @@ function App(): JSX.Element {
       mode="json"
       theme="github"
       width="100%"
-      height={`${height - 200}px`}
+      height={editorHeight}
       fontSize={15}
       value={jmesOutput.output}
       setOptions={{
@@ -136,9 +137,7 @@ function App(): JSX.Element {
               <Grid item xs={6}>
                 <Box sx={styles.alert}>
                   {jmesOutput.error && <Alert severity="error">{jmesOutput.error}</Alert>}
-                  {!jmesOutput.error && (
-                    <Alert severity="success">JMES Query Output:</Alert>
-                  )}
+                  {!jmesOutput.error && <Alert severity="info">JMES Query Output</Alert>}
                 </Box>
                 {jmesEditor}
               </Grid>
