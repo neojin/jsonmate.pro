@@ -64,6 +64,21 @@ function App(): JSX.Element {
   const { height } = useWindowDimensions();
   const editorHeight = `${height - 250}px`;
 
+  const removeQuotes = (str: string) => {
+    // there is a bug in jsonrepair that doesn't handle quotes correctly
+    // so we remove them here
+    // TODO: numbers still get returned as valid JSON
+
+    const stripped = str.replace(/^\s+|\s+$/g, '');
+    if (
+      (stripped.startsWith('"') && stripped.endsWith('"')) ||
+      (stripped.startsWith("'") && stripped.endsWith("'"))
+    ) {
+      return stripped.slice(1, -1);
+    }
+    return stripped;
+  };
+
   const onBlur = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     editor: any,
@@ -77,8 +92,8 @@ function App(): JSX.Element {
     }
 
     try {
-      const repairJson = jsonrepair(value);
-      const parsedJson = JSON.parse(repairJson);
+      const repairJson = jsonrepair(removeQuotes(value));
+      const parsedJson = JSON.parse(removeQuotes(repairJson));
       json = JSON.stringify(parsedJson, null, 2);
       dispatch(jsonInputActions.set({ input: json, valid: true, error: '' }));
     } catch (e) {
