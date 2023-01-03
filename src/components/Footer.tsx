@@ -165,7 +165,7 @@ function Footer(): JSX.Element {
           <Typography sx={{ mt: 2 }}>
             JMES is a query language for JSON. It allows you extract/transform your
             original JSON into a new JSON object or array.
-            <p>For example, give the following a try:</p>
+            <p>For example:</p>
             {jmesExamples()}
             For more information and examples, please visit{' '}
             <Link href="https://jmespath.org/tutorial.html" target={'_blank'}>
