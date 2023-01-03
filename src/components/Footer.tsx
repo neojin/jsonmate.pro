@@ -84,7 +84,6 @@ function Footer(): JSX.Element {
       p: '2px 4px',
       display: 'flex',
       alignItems: 'center',
-      bgcolor: '#fffde7',
     },
     input: { ml: 1, flex: 1 },
     submit: { p: '10px' },
@@ -135,7 +134,15 @@ function Footer(): JSX.Element {
   return (
     <Box component="footer" sx={styles.box}>
       <Container maxWidth="lg">
-        <Paper component="form" onSubmit={onSubmit} sx={styles.paper}>
+        <Paper
+          component="form"
+          onSubmit={onSubmit}
+          sx={
+            jsonInput.valid
+              ? { ...styles.paper, bgcolor: '#fffde7' }
+              : { ...styles.paper, bgcolor: '#dedede' }
+          }
+        >
           <IconButton sx={{ p: '10px' }} onClick={toggleModal}>
             <QuestionMarkIcon />
           </IconButton>

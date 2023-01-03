@@ -167,10 +167,10 @@ function App(): JSX.Element {
         <CssBaseline />
         <Container maxWidth="xl">
           <Grid container>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <Typography sx={styles.header}>{'jsonmate.pro'}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={9}>
               <Typography sx={styles.subHeader} textAlign="right">
                 validate, format, repair, query, and transform your JSON
               </Typography>
@@ -184,7 +184,7 @@ function App(): JSX.Element {
               <Grid item xs={6}>
                 <Box sx={styles.alert}>
                   {jmesOutput.error && <Alert severity="error">{jmesOutput.error}</Alert>}
-                  {!jmesOutput.error && <Alert severity="info">JMES Query Output</Alert>}
+                  {!jmesOutput.error && <Alert severity="info">Query Output</Alert>}
                 </Box>
                 {jmesEditor}
               </Grid>
