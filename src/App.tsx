@@ -2,6 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import useWindowDimensions from './hooks/useWindowDimensions';
 import AceEditor from 'react-ace';
@@ -28,6 +29,15 @@ function App(): JSX.Element {
       fontFamily: 'Roboto Mono',
       fontSize: '1.5rem',
       marginTop: '10px',
+    },
+    subHeader: {
+      height: '100%',
+      display: 'flex',
+      alignItems: 'end',
+      justifyContent: 'flex-end',
+      color: '#888888',
+      fontFamily: 'Roboto Mono',
+      fontSize: '0.9rem',
     },
     box: {
       display: 'flex',
@@ -102,14 +112,14 @@ function App(): JSX.Element {
         )}
       </Box>
       <AceEditor
-        placeholder="Paste your JSON here. Click anywhere else to format it."
+        placeholder="Paste your JSON here. Click anywhere else to validate and format it."
         mode="json"
         theme="github"
         width="100%"
         height={editorHeight}
         onBlur={onBlur}
         onChange={onChange}
-        fontSize={15}
+        fontSize={jsonInput.input ? 14 : 16}
         value={jsonInput.input}
         setOptions={{
           showLineNumbers: true,
@@ -126,7 +136,7 @@ function App(): JSX.Element {
       theme="github"
       width="100%"
       height={editorHeight}
-      fontSize={15}
+      fontSize={14}
       value={jmesOutput.output}
       setOptions={{
         showLineNumbers: true,
@@ -141,7 +151,16 @@ function App(): JSX.Element {
       <Box sx={styles.box}>
         <CssBaseline />
         <Container maxWidth="xl">
-          <Box sx={styles.header}>{'jsonmate.pro'}</Box>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography sx={styles.header}>{'jsonmate.pro'}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography sx={styles.subHeader} textAlign="right">
+                validate, format, repair, query, and transform your JSON
+              </Typography>
+            </Grid>
+          </Grid>
           {jmesOutput.showPanel && (
             <Grid container spacing={1}>
               <Grid item xs={6}>
