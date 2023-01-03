@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { jsonInputActions } from './store/jsonInputSlice';
 import { RootState } from './store';
 import { Grid } from '@mui/material';
+import { jsonrepair, JSONRepairError } from 'jsonrepair';
 
 function App(): JSX.Element {
   const theme = createTheme({
@@ -66,12 +67,22 @@ function App(): JSX.Element {
     }
 
     try {
-      const parsedJson = JSON.parse(value);
+      const repairJson = jsonrepair(value);
+      const parsedJson = JSON.parse(repairJson);
       json = JSON.stringify(parsedJson, null, 2);
       dispatch(jsonInputActions.set({ input: json, valid: true, error: '' }));
     } catch (e) {
       if (e instanceof SyntaxError) {
         dispatch(jsonInputActions.set({ input: value, valid: false, error: e.message }));
+      }
+      if (e instanceof JSONRepairError) {
+        dispatch(
+          jsonInputActions.set({
+            input: value,
+            valid: false,
+            error: `Repair Error: ${e.message}`,
+          }),
+        );
       }
     }
   };
