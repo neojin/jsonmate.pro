@@ -127,7 +127,7 @@ function App(): JSX.Element {
         )}
       </Box>
       <AceEditor
-        placeholder="Paste your JSON here. Click anywhere else to validate and format it."
+        placeholder="Paste your JSON here. Click anywhere outside this form field to validate it."
         mode="json"
         theme="github"
         width="100%"
