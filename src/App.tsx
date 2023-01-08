@@ -1,3 +1,4 @@
+import { useMemo, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -5,20 +6,40 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import useWindowDimensions from './hooks/useWindowDimensions';
 import Footer from './components/Footer';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './store';
 import { Grid } from '@mui/material';
 import JmesEditor from './components/JmesEditor';
 import JsonEditor from './components/JsonEditor';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Cookies from 'universal-cookie';
+import { userPreferencesActions } from './store/userPreferencesSlice';
 
 function App(): JSX.Element {
-  const theme = createTheme({
-    palette: {
-      background: {
-        default: '#eeeeee',
-      },
-    },
-  });
+  const dispatch = useDispatch();
+  const mode = useSelector((state: RootState) => state.userPreferences.mode);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    const cookieMode = cookies.get('mode');
+    if (cookieMode) {
+      dispatch(userPreferencesActions.setMode(cookieMode));
+      return;
+    }
+
+    dispatch(userPreferencesActions.setMode(prefersDarkMode ? 'dark' : 'light'));
+  }, []);
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: mode,
+        },
+      }),
+    [mode],
+  );
 
   const styles = {
     header: {

@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import QuestionMarkIcon from '@mui/icons-material/Help';
 import jmespath from 'jmespath';
 import { jmesOutputActions } from '../store/jmesOutputSlice';
+import ColorModeChanger from './ColorModeChanger';
 
 function Footer(): JSX.Element {
   const [jmesInput, setJmesInput] = useState('');
@@ -160,7 +161,8 @@ function Footer(): JSX.Element {
           </IconButton>
         </Paper>
         <Typography sx={{ mt: 1, fontSize: '90%', textAlign: 'center', color: '#666' }}>
-          jsonmate.pro runs completely in the browser. No data is sent to a server.
+          jsonmate.pro runs completely in the browser. No data is sent to a server.{' '}
+          <ColorModeChanger />
         </Typography>
       </Container>
       <Modal open={openModal} onClose={toggleModal}>
