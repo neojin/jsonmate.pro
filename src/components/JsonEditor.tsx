@@ -90,6 +90,7 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
         )}
       </Box>
       <AceEditor
+        style={{ colorScheme: theme.palette.mode }}
         placeholder="Paste your JSON here. Click anywhere outside this form field to validate it."
         mode="json"
         theme={aceTheme}

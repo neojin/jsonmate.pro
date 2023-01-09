@@ -31,6 +31,7 @@ export default function JmesEditor(props: JmesEditorProps): JSX.Element {
       </Box>
       <AceEditor
         mode="json"
+        style={{ colorScheme: theme.palette.mode }}
         theme={aceTheme}
         width="100%"
         height={`${props.height}px`}
