@@ -38,6 +38,7 @@ export default function JmesEditor(props: JmesEditorProps): JSX.Element {
         value={jmesOutput.output}
         setOptions={{
           showLineNumbers: true,
+          showPrintMargin: false,
           tabSize: 2,
           useWorker: false,
         }}

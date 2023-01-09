@@ -101,6 +101,7 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
         value={jsonInput.input}
         setOptions={{
           showLineNumbers: true,
+          showPrintMargin: false,
           tabSize: 2,
           useWorker: false,
         }}
