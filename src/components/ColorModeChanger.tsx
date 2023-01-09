@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Cookies from 'universal-cookie';
 import { userPreferencesActions } from '../store/userPreferencesSlice';
 import { useDispatch } from 'react-redux';
+import { Tooltip } from '@mui/material';
 
 export default function ColorModeChanger(): JSX.Element {
   const theme = useTheme();
@@ -18,11 +19,14 @@ export default function ColorModeChanger(): JSX.Element {
   };
 
   return (
-    <>
-      {theme.palette.mode.charAt(0).toUpperCase() + theme.palette.mode.substring(1)} mode
+    <Tooltip title="Toggle light/dark mode">
       <IconButton onClick={toggleColorMode} color="inherit">
-        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        {theme.palette.mode === 'dark' ? (
+          <Brightness7Icon fontSize="small" />
+        ) : (
+          <Brightness4Icon fontSize="small" />
+        )}
       </IconButton>
-    </>
+    </Tooltip>
   );
 }

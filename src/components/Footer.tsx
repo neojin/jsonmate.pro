@@ -99,6 +99,7 @@ function Footer(): JSX.Element {
       width: 600,
       boxShadow: 24,
       p: 2,
+      backgroundColor: theme.palette.background.default,
     },
   };
 
@@ -135,41 +136,43 @@ function Footer(): JSX.Element {
   };
 
   return (
-    <Box component="footer" sx={styles.box}>
-      <Container maxWidth="lg">
-        <Paper
-          component="form"
-          onSubmit={onSubmit}
-          sx={jsonInput.valid ? { ...styles.paper } : { ...styles.paper }}
-        >
-          <IconButton sx={{ p: '10px' }} onClick={toggleModal}>
-            <QuestionMarkIcon />
-          </IconButton>
-          <InputBase
-            sx={styles.input}
-            placeholder={
-              jsonInput.valid ? 'JMES Path Query' : 'Please enter valid JSON first'
-            }
-            value={jmesInput}
-            onChange={onChange}
-            disabled={!jsonInput.valid}
-          />
-          <IconButton type="submit" sx={styles.submit}>
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-        <Typography
-          sx={{
-            mt: 1,
-            fontSize: '90%',
-            textAlign: 'center',
-            color: theme.palette.text.secondary,
-          }}
-        >
-          jsonmate.pro runs completely in the browser. No data is sent to a server.{' '}
-          <ColorModeChanger />
-        </Typography>
-      </Container>
+    <>
+      <Box component="footer" sx={styles.box}>
+        <Container maxWidth="lg">
+          <Paper
+            component="form"
+            onSubmit={onSubmit}
+            sx={jsonInput.valid ? { ...styles.paper } : { ...styles.paper }}
+          >
+            <IconButton sx={{ p: '10px' }} onClick={toggleModal}>
+              <QuestionMarkIcon />
+            </IconButton>
+            <InputBase
+              sx={styles.input}
+              placeholder={
+                jsonInput.valid ? 'JMES Path Query' : 'Please enter valid JSON first'
+              }
+              value={jmesInput}
+              onChange={onChange}
+              disabled={!jsonInput.valid}
+            />
+            <IconButton type="submit" sx={styles.submit}>
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+          <Typography
+            sx={{
+              mt: 1,
+              fontSize: '90%',
+              textAlign: 'center',
+              color: theme.palette.text.secondary,
+            }}
+          >
+            jsonmate.pro runs completely in the browser. No data is sent to a server.
+            <ColorModeChanger />
+          </Typography>
+        </Container>
+      </Box>
       <Modal open={openModal} onClose={toggleModal}>
         <Box sx={styles.modal}>
           <Typography variant="h6" component="h2">
@@ -187,7 +190,7 @@ function Footer(): JSX.Element {
           </Typography>
         </Box>
       </Modal>
-    </Box>
+    </>
   );
 }
 
