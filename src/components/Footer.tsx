@@ -16,6 +16,7 @@ import QuestionMarkIcon from '@mui/icons-material/Help';
 import jmespath from 'jmespath';
 import { jmesOutputActions } from '../store/jmesOutputSlice';
 import ColorModeChanger from './ColorModeChanger';
+import { useTheme } from '@mui/material/styles';
 
 function Footer(): JSX.Element {
   const [jmesInput, setJmesInput] = useState('');
@@ -23,6 +24,7 @@ function Footer(): JSX.Element {
   const [openModal, setOpenModal] = useState(false);
   const jsonInput = useSelector((state: RootState) => state.jsonInput);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setJmesInput(event.target.value);
@@ -79,7 +81,6 @@ function Footer(): JSX.Element {
     box: {
       py: 2,
       mt: 'auto',
-      bgcolor: '#cfd8dc',
     },
     paper: {
       p: '2px 4px',
@@ -138,11 +139,7 @@ function Footer(): JSX.Element {
         <Paper
           component="form"
           onSubmit={onSubmit}
-          sx={
-            jsonInput.valid
-              ? { ...styles.paper, bgcolor: '#fffde7' }
-              : { ...styles.paper, bgcolor: '#dedede' }
-          }
+          sx={jsonInput.valid ? { ...styles.paper } : { ...styles.paper }}
         >
           <IconButton sx={{ p: '10px' }} onClick={toggleModal}>
             <QuestionMarkIcon />
@@ -160,7 +157,14 @@ function Footer(): JSX.Element {
             <SearchIcon />
           </IconButton>
         </Paper>
-        <Typography sx={{ mt: 1, fontSize: '90%', textAlign: 'center', color: '#666' }}>
+        <Typography
+          sx={{
+            mt: 1,
+            fontSize: '90%',
+            textAlign: 'center',
+            color: theme.palette.text.secondary,
+          }}
+        >
           jsonmate.pro runs completely in the browser. No data is sent to a server.{' '}
           <ColorModeChanger />
         </Typography>

@@ -4,6 +4,8 @@ import { Box, Alert } from '@mui/material';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-monokai';
+import { useTheme } from '@mui/material/styles';
 
 interface JmesEditorProps {
   height: number;
@@ -11,6 +13,9 @@ interface JmesEditorProps {
 
 export default function JmesEditor(props: JmesEditorProps): JSX.Element {
   const jmesOutput = useSelector((state: RootState) => state.jmesOutput);
+  const theme = useTheme();
+  const aceTheme = theme.palette.mode === 'dark' ? 'monokai' : 'github';
+
   const styles = {
     alert: {
       paddingTop: '10px',
@@ -26,7 +31,7 @@ export default function JmesEditor(props: JmesEditorProps): JSX.Element {
       </Box>
       <AceEditor
         mode="json"
-        theme="github"
+        theme={aceTheme}
         width="100%"
         height={`${props.height}px`}
         fontSize={14}

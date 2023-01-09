@@ -52,7 +52,7 @@ function App(): JSX.Element {
       display: 'flex',
       alignItems: 'end',
       justifyContent: 'flex-end',
-      color: '#888888',
+      color: theme.palette.text.secondary,
       fontFamily: 'Roboto Mono',
       fontSize: '0.9rem',
     },
@@ -66,7 +66,7 @@ function App(): JSX.Element {
   const jmesOutput = useSelector((state: RootState) => state.jmesOutput);
 
   const { height } = useWindowDimensions();
-  const editorHeight = height - 250;
+  const editorHeight = height - 270;
 
   return (
     <ThemeProvider theme={theme}>

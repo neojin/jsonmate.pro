@@ -5,8 +5,10 @@ import { Box, Alert } from '@mui/material';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-monokai';
 import { jsonrepair, JSONRepairError } from 'jsonrepair';
 import { jsonInputActions } from '../store/jsonInputSlice';
+import { useTheme } from '@mui/material/styles';
 
 interface JsonEditorProps {
   height: number;
@@ -15,6 +17,8 @@ interface JsonEditorProps {
 export default function JsonEditor(props: JsonEditorProps): JSX.Element {
   const jsonInput = useSelector((state: RootState) => state.jsonInput);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const aceTheme = theme.palette.mode === 'dark' ? 'monokai' : 'github';
 
   const styles = {
     alert: {
@@ -88,7 +92,7 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
       <AceEditor
         placeholder="Paste your JSON here. Click anywhere outside this form field to validate it."
         mode="json"
-        theme="github"
+        theme={aceTheme}
         width="100%"
         height={`${props.height}px`}
         onBlur={onBlur}

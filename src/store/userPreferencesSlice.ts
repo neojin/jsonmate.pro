@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const userPreferencesSlice = createSlice({
   name: 'userPreferences',
   initialState: {
-    mode: 'light',
+    mode: 'light' as 'light' | 'dark',
   },
   reducers: {
     setMode: (state, action) => {
