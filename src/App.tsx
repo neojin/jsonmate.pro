@@ -35,7 +35,11 @@ function App(): JSX.Element {
     () =>
       createTheme({
         palette: {
-          mode: mode,
+          mode,
+          background: {
+            default: mode === 'dark' ? '#424242' : '#cfd8dc',
+            paper: mode === 'dark' ? '#373737' : '#e0e0e0',
+          },
         },
       }),
     [mode],

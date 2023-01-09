@@ -81,11 +81,13 @@ function Footer(): JSX.Element {
     box: {
       py: 2,
       mt: 'auto',
+      backgroundColor: theme.palette.background.paper,
     },
     paper: {
       p: '2px 4px',
       display: 'flex',
       alignItems: 'center',
+      boxShadow: 3,
     },
     input: { ml: 1, flex: 1 },
     submit: { p: '10px' },
@@ -95,7 +97,6 @@ function Footer(): JSX.Element {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       width: 600,
-      bgcolor: 'background.paper',
       boxShadow: 24,
       p: 2,
     },
