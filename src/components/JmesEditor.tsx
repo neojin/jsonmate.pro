@@ -2,9 +2,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { Box, Alert } from '@mui/material';
 import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/ext-searchbox';
 import { useTheme } from '@mui/material/styles';
 
 interface JmesEditorProps {

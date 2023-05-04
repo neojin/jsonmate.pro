@@ -17,6 +17,7 @@
     "@types/jmespath": "^0.15.0",
     "@types/react-router-dom": "5.3.3",
     "@typescript-eslint/parser": "^5.46.1",
+    "ace-builds": "^1.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "jmespath": "^0.16.0",
