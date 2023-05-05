@@ -40,9 +40,7 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
     if (compressedInput) {
       try {
         const uncompressedInput = JSONCrush.uncrush(compressedInput);
-        dispatch(
-          jsonInputActions.set({ input: uncompressedInput, valid: true, error: '' }),
-        );
+        dispatch(jsonInputActions.setAndValidate({ input: uncompressedInput }));
       } catch (e) {
         console.log(e);
         dispatch(
@@ -55,52 +53,19 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
       }
     }
   }, []);
-  const removeQuotes = (str: string) => {
-    // there is a bug in jsonrepair that doesn't handle quotes correctly
-    // so we remove them here
-    // TODO: numbers still get returned as valid JSON
-
-    const stripped = str.replace(/^\s+|\s+$/g, '');
-    if (
-      (stripped.startsWith('"') && stripped.endsWith('"')) ||
-      (stripped.startsWith("'") && stripped.endsWith("'"))
-    ) {
-      return stripped.slice(1, -1);
-    }
-    return stripped;
-  };
 
   const onBlur = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     editor: any,
   ) => {
     const value = editor.getValue();
-    let json = '';
 
     if (!value) {
       dispatch(jsonInputActions.reset());
       return;
     }
 
-    try {
-      const repairJson = jsonrepair(removeQuotes(value));
-      const parsedJson = JSON.parse(removeQuotes(repairJson));
-      json = JSON.stringify(parsedJson, null, 2);
-      dispatch(jsonInputActions.set({ input: json, valid: true, error: '' }));
-    } catch (e) {
-      if (e instanceof SyntaxError) {
-        dispatch(jsonInputActions.set({ input: value, valid: false, error: e.message }));
-      }
-      if (e instanceof JSONRepairError) {
-        dispatch(
-          jsonInputActions.set({
-            input: value,
-            valid: false,
-            error: `Repair Error: ${e.message}`,
-          }),
-        );
-      }
-    }
+    dispatch(jsonInputActions.setAndValidate({ input: value }));
   };
 
   const onChange = (value: string) => {

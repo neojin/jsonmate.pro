@@ -18,23 +18,27 @@ interface ShareButtonProps {
 }
 
 export default function ShareButton(props: ShareButtonProps): JSX.Element {
+  const MAXLENGTH = 10000;
   const [error, setError] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const jsonInput = useSelector((state: RootState) => state.jsonInput);
   const jmesOutput = useSelector((state: RootState) => state.jmesOutput);
   const [compressed, setCompressed] = useState<string>('');
   const textFieldRef = useRef<HTMLDivElement>(null);
+  const [compactedLength, setCompactedLength] = useState<number>(0);
 
   const handleClick = (input: string) => {
     if (input == 'json') {
-      if (jsonInput.input.length > 5000) {
+      if (jsonInput.input.length > MAXLENGTH) {
         setError(
-          `JSON input is too large to share. Your input must be less than 5000 characters. Your input is ${jsonInput.input.length} characters long.`,
+          `JSON input is too large to share. Your input must be less than ${MAXLENGTH} characters. Your input is ${jsonInput.input.length} characters long.`,
         );
       } else {
         setError('');
-        const compressed = JSONCrush.crush(jsonInput.input);
+        const compacted = JSON.stringify(JSON.parse(jsonInput.input));
+        const compressed = JSONCrush.crush(compacted);
         setCompressed(compressed);
+        setCompactedLength(compacted.length);
       }
     } else if (input == 'jmes') {
     }
@@ -98,7 +102,7 @@ export default function ShareButton(props: ShareButtonProps): JSX.Element {
               <br />
               <br />
               FYI, some apps cannot handle URLs that are too long. Your JSON is currently{' '}
-              {jsonInput.input.length} characters long.
+              {compactedLength} characters long.
             </>
           )}
         </DialogContent>
