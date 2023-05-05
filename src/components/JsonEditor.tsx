@@ -11,6 +11,10 @@ import 'ace-builds/src-noconflict/ext-searchbox';
 import { jsonrepair, JSONRepairError } from 'jsonrepair';
 import { jsonInputActions } from '../store/jsonInputSlice';
 import { useTheme } from '@mui/material/styles';
+import ShareButton from './ShareButton';
+import { useLocation } from 'react-router-dom';
+import JSONCrush from 'jsoncrush';
+import { useEffect } from 'react';
 
 interface JsonEditorProps {
   height: number;
@@ -29,6 +33,28 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
     },
   };
 
+  const query = new URLSearchParams(useLocation().search);
+
+  useEffect(() => {
+    const compressedInput = query.get('d');
+    if (compressedInput) {
+      try {
+        const uncompressedInput = JSONCrush.uncrush(compressedInput);
+        dispatch(
+          jsonInputActions.set({ input: uncompressedInput, valid: true, error: '' }),
+        );
+      } catch (e) {
+        console.log(e);
+        dispatch(
+          jsonInputActions.set({
+            input: '',
+            valid: false,
+            error: 'Could not uncompress JSON from URL',
+          }),
+        );
+      }
+    }
+  }, []);
   const removeQuotes = (str: string) => {
     // there is a bug in jsonrepair that doesn't handle quotes correctly
     // so we remove them here
@@ -88,12 +114,14 @@ export default function JsonEditor(props: JsonEditorProps): JSX.Element {
           <Alert severity="error">{jsonInput.error}</Alert>
         )}
         {!jsonInput.error && jsonInput.valid && (
-          <Alert severity="success">JSON is valid</Alert>
+          <Alert severity="success" action={<ShareButton input={'json'} />}>
+            JSON is valid
+          </Alert>
         )}
       </Box>
       <AceEditor
         style={{ colorScheme: theme.palette.mode }}
-        placeholder="Paste your JSON here. Click anywhere outside this form field to validate it."
+        placeholder="Paste your JSON here. Click anywhere outside this box to format it."
         mode="json"
         theme={aceTheme}
         width="100%"
