@@ -11,6 +11,7 @@ import { Alert, TextField, Box, Button } from '@mui/material';
 import JSONCrush from 'jsoncrush';
 import { useRef } from 'react';
 import FileCopy from '@mui/icons-material/FileCopy';
+import { MutableRefObject } from 'react';
 
 interface ShareButtonProps {
   input: string;
@@ -22,7 +23,7 @@ export default function ShareButton(props: ShareButtonProps): JSX.Element {
   const jsonInput = useSelector((state: RootState) => state.jsonInput);
   const jmesOutput = useSelector((state: RootState) => state.jmesOutput);
   const [compressed, setCompressed] = useState<string>('');
-  const textFieldRef = useRef(null);
+  const textFieldRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (input: string) => {
     if (input == 'json') {
@@ -47,8 +48,9 @@ export default function ShareButton(props: ShareButtonProps): JSX.Element {
   const handleCopy = () => {
     if (textFieldRef.current) {
       const textFieldInputElement = textFieldRef.current.querySelector('input');
-      textFieldInputElement.select();
-      document.execCommand('copy');
+      if (textFieldInputElement) {
+        navigator.clipboard.writeText(textFieldInputElement.value);
+      }
     }
   };
 
