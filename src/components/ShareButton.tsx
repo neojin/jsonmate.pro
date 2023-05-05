@@ -29,7 +29,7 @@ export default function ShareButton(props: ShareButtonProps): JSX.Element {
 
   const handleClick = (input: string) => {
     if (input == 'json') {
-      if (jsonInput.input.length > MAXLENGTH) {
+      if (compactedLength > MAXLENGTH) {
         setError(
           `JSON input is too large to share. Your input must be less than ${MAXLENGTH} characters. Your input is ${jsonInput.input.length} characters long.`,
         );
