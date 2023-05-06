@@ -60,16 +60,18 @@ export default function ShareButton(props: ShareButtonProps): JSX.Element {
 
   return (
     <React.Fragment>
-      <IconButton
+      <Button
+        variant="outlined"
         aria-label="close"
         color="inherit"
         size="small"
         onClick={() => {
           handleClick(props.input);
         }}
+        startIcon={<ShareIcon />}
       >
-        <ShareIcon />
-      </IconButton>
+        Share
+      </Button>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle id="alert-dialog-title">Share JSON</DialogTitle>
         <DialogContent>
@@ -84,7 +86,6 @@ export default function ShareButton(props: ShareButtonProps): JSX.Element {
                 <TextField
                   fullWidth
                   value={`${window.location.origin}/?d=${encodeURIComponent(compressed)}`}
-                  variant="outlined"
                   inputProps={{
                     onFocus: handleFocus,
                   }}
